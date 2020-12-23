@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TaskFactory extends Factory
@@ -22,7 +23,10 @@ class TaskFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->word(),
+            'description' => $this->faker->paragraph(2),
+            'deadline' => Carbon::now()->addDay(1),
+            'project_id' => $this->faker->numberBetween(1, 20)
         ];
     }
 }

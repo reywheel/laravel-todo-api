@@ -22,7 +22,8 @@ class ProjectFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->word(),
+            'user_id' => $this->faker->numberBetween(1, 5)
         ];
     }
 }
