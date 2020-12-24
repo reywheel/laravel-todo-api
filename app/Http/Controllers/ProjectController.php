@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -26,8 +27,11 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        $user_id = User::findOrFail($request->user_id)->id;
+
         $project = new Project();
         $project->fill($request->all());
+        $project->user_id = $user_id;
         $project->save();
 
         return response($project);
@@ -67,10 +71,10 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $project->delete();
+        $status = $project->delete();
 
         return response()->json([
-            'status' => 'OK',
+            'status' => $status,
             'message' => 'Project was deleted'
         ]);
     }

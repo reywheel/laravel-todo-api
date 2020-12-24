@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $tasks = Task::all();
+
+        return response($tasks);
     }
 
     /**
@@ -25,7 +28,14 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $project_id = Project::findOrFail($request->project_id)->id;
+        
+        $task = new Task();
+        $task->fill($request->all());
+        $task->project_id = $project_id;
+        $task->save();
+
+        return response($task);
     }
 
     /**
@@ -36,7 +46,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return response($task);
     }
 
     /**
@@ -48,17 +58,25 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $task->fill($request->all());
+        $task->save();
+
+        return response($task);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Task $task)
     {
-        //
+        $status = $task->delete();
+
+        return response()->json([
+            'status' => $status,
+            'message' => 'Task was deleted'
+        ]);
     }
 }
