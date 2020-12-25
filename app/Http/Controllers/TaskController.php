@@ -29,7 +29,7 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $project_id = Project::findOrFail($request->project_id)->id;
-        
+
         $task = new Task();
         $task->fill($request->all());
         $task->project_id = $project_id;

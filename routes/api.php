@@ -24,7 +24,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //TODO
-// контроллеры
-// роуты
-// тестирование роутов
 // реквесты с валидацией
+// passport
+// авторизация
