@@ -7,6 +7,7 @@ use App\Http\Requests\Task\ShowTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -18,7 +19,10 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
+        $user_id = \Auth::user()->id;
+        $tasks = Task::whereHas('project', function($query) use($user_id)  {
+            $query->where('user_id', $user_id);
+        })->get();
 
         return response($tasks);
     }
