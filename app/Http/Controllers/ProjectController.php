@@ -61,7 +61,9 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        $project->fill($request->all());
+        $validated = $request->validated();
+
+        $project->fill($validated);
         $project->save();
 
         return response($project);

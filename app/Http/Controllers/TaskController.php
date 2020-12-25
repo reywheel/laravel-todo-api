@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -26,9 +28,11 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        $project_id = Project::findOrFail($request->project_id)->id;
+        $validated = $request->validated();
+
+        $project_id = Project::findOrFail($validated['project_id'])->id;
 
         $task = new Task();
         $task->fill($request->all());
@@ -56,9 +60,11 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        $task->fill($request->all());
+        $validated = $request->validated();
+
+        $task->fill($validated);
         $task->save();
 
         return response($task);
