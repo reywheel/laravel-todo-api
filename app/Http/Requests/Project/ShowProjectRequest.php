@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskRequest extends FormRequest
+class ShowProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,9 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $project = $this->route('project');
+
+        return $this->user()->can('view', $project);
     }
 
     /**
@@ -24,10 +26,7 @@ class UpdateTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['string', 'min:4'],
-            'description' => ['string', 'min:4'],
-            'deadline' => ['date'],
-            'is_done' => ['boolean'],
+            //
         ];
     }
 }

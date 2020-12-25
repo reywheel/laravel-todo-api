@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProjectRequest extends FormRequest
+class ShowTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,8 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $task = $this->route('task');
+        return $this->user()->can('view', $task);
     }
 
     /**
@@ -24,8 +25,7 @@ class StoreProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string', 'min:4'],
-            'user_id' => ['required', 'int']
+            //
         ];
     }
 }
