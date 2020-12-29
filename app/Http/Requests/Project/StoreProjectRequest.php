@@ -26,7 +26,6 @@ class StoreProjectRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'min:4'],
-            'user_id' => ['required', 'int']
         ];
     }
 }

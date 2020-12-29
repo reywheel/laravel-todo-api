@@ -32,7 +32,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validated();
 
-        $user_id = User::findOrFail($validated['user_id'])->id;
+        $user_id = \Auth::user()->id;
 
         $project = new Project();
         $project->fill($request->all());
