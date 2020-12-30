@@ -17,12 +17,18 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user_id = \Auth::user()->id;
+
+        if ($request->has('filter')) {
+            $filter = $request->filter;
+            $filter = explode(':', $filter);
+        }
+
         $tasks = Task::whereHas('project', function($query) use($user_id)  {
             $query->where('user_id', $user_id);
-        })->get();
+        })->where($filter[0], $filter[1])->get();
 
         return response($tasks);
     }
