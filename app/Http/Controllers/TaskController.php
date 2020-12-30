@@ -21,14 +21,17 @@ class TaskController extends Controller
     {
         $user_id = \Auth::user()->id;
 
+        $query = Task::whereHas('project', function($query) use($user_id)  {
+            $query->where('user_id', $user_id);
+        });
+
         if ($request->has('filter')) {
             $filter = $request->filter;
             $filter = explode(':', $filter);
+            $query->where($filter[0], $filter[1]);
         }
 
-        $tasks = Task::whereHas('project', function($query) use($user_id)  {
-            $query->where('user_id', $user_id);
-        })->where($filter[0], $filter[1])->get();
+        $tasks = $query->get();
 
         return response($tasks);
     }
